@@ -141,6 +141,7 @@ class User(Base):
     additional_information = Column(String, nullable=True)
 
     is_banned = Column(Boolean, nullable=False, default=False)
+    is_deleted = Column(Boolean, nullable=False, default=False)
 
     # hosting preferences
     max_guests = Column(Integer, nullable=True)
@@ -179,6 +180,10 @@ class User(Base):
     @hybrid_property
     def is_jailed(self):
         return self.accepted_tos < 1 or self.is_missing_location
+
+    @hybrid_property
+    def is_hidden(self):
+        return self.is_banned | self.is_jailed | self.is_deleted
 
     @property
     def is_missing_location(self):
