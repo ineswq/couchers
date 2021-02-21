@@ -915,6 +915,9 @@ class Page(Base):
         ),
     )
 
+    def __repr__(self):
+        return f"Page({self.id=})"
+
 
 class PageVersion(Base):
     """
@@ -946,6 +949,9 @@ class PageVersion(Base):
             return get_coordinates(self.geom)
         else:
             return None
+
+    def __repr__(self):
+        return f"PageVersion({self.id=}, {self.page_id=})"
 
 
 class ClusterEventAssociation(Base):
