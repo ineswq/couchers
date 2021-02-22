@@ -15,11 +15,12 @@ from sqlalchemy import (
     ForeignKey,
     Index,
     Integer,
+    or_,
 )
 from sqlalchemy import LargeBinary as Binary
 from sqlalchemy import MetaData, Sequence, String, UniqueConstraint
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.ext.hybrid import hybrid_property
+from sqlalchemy.ext.hybrid import hybrid_property, hybrid_method
 from sqlalchemy.orm import backref, column_property, relationship
 from sqlalchemy.orm.session import Session
 from sqlalchemy.sql import func, text
@@ -179,11 +180,11 @@ class User(Base):
 
     @hybrid_property
     def is_jailed(self):
-        return self.accepted_tos < 1 or self.is_missing_location
+        return or_(self.accepted_tos < 1, self.is_missing_location)
 
-    @hybrid_property
+    @hybrid_method
     def is_hidden(self):
-        return self.is_banned | self.is_jailed | self.is_deleted
+        return or_(self.is_banned, self.is_jailed, self.is_deleted)
 
     @property
     def is_missing_location(self):
