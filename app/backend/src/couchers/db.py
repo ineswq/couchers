@@ -11,7 +11,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy.orm.session import Session
 from sqlalchemy.pool import NullPool
-from sqlalchemy.sql import and_, func, or_
+from sqlalchemy.sql import and_, func, or_, not_
 
 from couchers import config
 from couchers.crypto import urlsafe_secure_token
@@ -126,13 +126,13 @@ def get_user_by_field(session, field):
     """
     if is_valid_user_id(field):
         logger.debug(f"Field matched to type user id")
-        return session.query(User).filter(User.id == field).one_or_none()
+        return session.query(User).filter(not_(User.is_hidden)).filter(User.id == field).one_or_none()
     elif is_valid_username(field):
         logger.debug(f"Field matched to type username")
-        return session.query(User).filter(User.username == field).one_or_none()
+        return session.query(User).filter(not_(User.is_hidden)).filter(User.username == field).one_or_none()
     elif is_valid_email(field):
         logger.debug(f"Field matched to type email")
-        return session.query(User).filter(User.email == field).one_or_none()
+        return session.query(User).filter(not_(User.is_hidden)).filter(User.email == field).one_or_none()
     else:
         logger.debug(f"Field {field=}, didn't match any known types")
         return None

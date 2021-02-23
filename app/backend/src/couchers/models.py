@@ -265,7 +265,7 @@ class User(Base):
             .filter(FriendRelationship.status == FriendStatus.accepted)
         )
 
-        return session.query(User).filter(User.id.in_(q1.union(q2).intersect(q3.union(q4)).subquery())).all()
+        return session.query(User).filter(not_(User.is_hidden)).filter(User.id.in_(q1.union(q2).intersect(q3.union(q4)).subquery())).all()
 
     def __repr__(self):
         return f"User(id={self.id}, email={self.email}, username={self.username})"
