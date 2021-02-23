@@ -16,6 +16,7 @@ from sqlalchemy import (
     Index,
     Integer,
     or_,
+    not_,
 )
 from sqlalchemy import LargeBinary as Binary
 from sqlalchemy import MetaData, Sequence, String, UniqueConstraint
@@ -182,13 +183,13 @@ class User(Base):
     def is_jailed(self):
         return or_(self.accepted_tos < 1, self.is_missing_location)
 
-    @hybrid_method
+    @hybrid_property
     def is_hidden(self):
         return or_(self.is_banned, self.is_jailed, self.is_deleted)
 
-    @property
+    @hybrid_property
     def is_missing_location(self):
-        return not self.geom or not self.geom_radius
+        return or_(self.geom is None, self.geom_radius is None)
 
     @property
     def coordinates(self):
