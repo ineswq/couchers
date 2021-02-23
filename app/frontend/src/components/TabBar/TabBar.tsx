@@ -3,9 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import React from "react";
 
 const useStyles = makeStyles((theme) => ({
-  tabRoot: {
-    minWidth: theme.spacing(25),
-  },
+  tabRoot: {},
 }));
 
 export interface TabBarProps<T extends Record<string, React.ReactNode>> {

@@ -17,6 +17,8 @@ export const user1 = {
   communityStanding: 0.5,
   verification: 0.5,
   aboutMe: "I am a user",
+  countriesLivedList: ["United States"],
+  countriesVisitedList: ["Germany", "Spain", "Cananda"],
 } as User.AsObject;
 
 const user2 = {
@@ -35,14 +37,19 @@ const user3 = {
   avatarUrl: funnykid,
 } as User.AsObject;
 
-const userMap = new Map(
-  [user1, user2, user3].map((user) => [user.userId, user])
-);
+const userMap = {
+  "1": user1,
+  "2": user2,
+  "3": user3,
+  funnycat: user1,
+  funnydog: user2,
+  funnykid: user3,
+};
 
 export const mockedService = ({
   user: {
     getUser: (id: string) => {
-      const result = userMap.get(+id);
+      const result = userMap[id as keyof typeof userMap];
       return Promise.resolve(result);
     },
   },

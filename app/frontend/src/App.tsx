@@ -15,7 +15,7 @@ import AuthProvider from "./features/auth/AuthProvider";
 import { ReactQueryClientProvider } from "./reactQueryClient";
 import { theme } from "./theme";
 
-const useStyles = makeStyles({
+export const useStyles = makeStyles({
   padding: {
     paddingBottom: theme.shape.navPaddingMobile,
     paddingLeft: theme.spacing(2),
